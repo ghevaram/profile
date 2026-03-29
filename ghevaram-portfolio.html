@@ -1,0 +1,1828 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ghevaram Suthar — Frontend Developer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js"></script>
+
+    <style>
+      :root {
+        --bg: #0a0a08;
+        --surface: #111110;
+        --surface2: #1a1a17;
+        --border: rgba(255, 255, 255, 0.07);
+        --text: #f0ede6;
+        --muted: #7a7970;
+        --accent: #c8f04a;
+        --accent2: #f0a832;
+        --accent3: #4af0c8;
+        --red: #f04a6e;
+        --shadow: rgba(0, 0, 0, 0.4);
+      }
+
+      :root.light {
+        --bg: #f5f4f0;
+        --surface: #eceae4;
+        --surface2: #e2e0d8;
+        --border: rgba(0, 0, 0, 0.09);
+        --text: #1a1a16;
+        --muted: #888880;
+        --accent: #6aa800;
+        --accent2: #d48000;
+        --accent3: #008a6e;
+        --red: #c8003a;
+        --shadow: rgba(0, 0, 0, 0.12);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Figtree", sans-serif;
+        overflow-x: hidden;
+        cursor: none;
+      }
+
+      /* Custom Cursor */
+      .cursor {
+        width: 10px;
+        height: 10px;
+        background: var(--accent);
+        border-radius: 50%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        transition:
+          width 0.2s,
+          height 0.2s,
+          background 0.2s;
+      }
+      .cursor-ring {
+        width: 36px;
+        height: 36px;
+        border: 1.5px solid rgba(200, 240, 74, 0.5);
+        border-radius: 50%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: 9998;
+        transform: translate(-50%, -50%);
+        transition:
+          width 0.3s,
+          height 0.3s;
+      }
+      body:has(a:hover) .cursor,
+      body:has(button:hover) .cursor {
+        width: 20px;
+        height: 20px;
+      }
+      body:has(a:hover) .cursor-ring,
+      body:has(button:hover) .cursor-ring {
+        width: 56px;
+        height: 56px;
+      }
+
+      /* Noise overlay */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 1;
+        opacity: 0.4;
+      }
+
+      /* NAV */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.4rem 3rem;
+        border-bottom: 1px solid var(--border);
+        background: rgba(10, 10, 8, 0.88);
+        backdrop-filter: blur(20px);
+      }
+      .nav-logo {
+        font-family: "Figtree", sans-serif;
+        letter-spacing: -0.02em;
+        color: var(--text);
+        text-decoration: none;
+      }
+      .nav-logo span {
+        color: var(--accent);
+      }
+      .nav-links {
+        display: flex;
+        gap: 2.5rem;
+        align-items: center;
+      }
+      .nav-links a {
+        font-family: "DM Mono", monospace;
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+        text-decoration: none;
+        text-transform: uppercase;
+        transition: color 0.2s;
+      }
+      .nav-links a:hover {
+        color: var(--accent);
+      }
+      .nav-cta {
+        font-family: "DM Mono", monospace;
+        font-size: 0.72rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 0.5rem 1.2rem;
+        border: 1px solid var(--accent);
+        color: var(--accent);
+        background: transparent;
+        border-radius: 2px;
+        cursor: none;
+        transition:
+          background 0.2s,
+          color 0.2s;
+      }
+      .nav-cta:hover {
+        background: var(--accent);
+        color: var(--bg);
+      }
+
+      /* THEME TOGGLE */
+      .theme-toggle {
+        width: 40px;
+        height: 22px;
+        border-radius: 100px;
+        border: 1.5px solid var(--border);
+        background: var(--surface2);
+        display: flex;
+        align-items: center;
+        padding: 2px;
+        cursor: none;
+        position: relative;
+        transition:
+          border-color 0.25s,
+          background 0.25s;
+        flex-shrink: 0;
+      }
+      .theme-toggle:hover {
+        border-color: var(--accent);
+      }
+      .toggle-knob {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: var(--muted);
+        transition:
+          transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+          background 0.25s;
+        flex-shrink: 0;
+      }
+      :root.light .toggle-knob {
+        transform: translateX(18px);
+        background: var(--accent);
+      }
+      :root:not(.light) .toggle-knob {
+        transform: translateX(0px);
+        background: var(--muted);
+      }
+
+      /* HERO */
+      #hero {
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+        padding: 8rem 3rem 4rem;
+        position: relative;
+        gap: 4rem;
+      }
+
+      .hero-grid-line {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        background-size: 60px 60px;
+        pointer-events: none;
+      }
+
+      .hero-tag {
+        font-family: "DM Mono", monospace;
+        font-size: 0.72rem;
+        letter-spacing: 0.15em;
+        color: var(--accent);
+        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        margin-bottom: 1.5rem;
+        opacity: 0;
+      }
+      .hero-tag::before {
+        content: "";
+        width: 28px;
+        height: 1px;
+        background: var(--accent);
+      }
+
+      .hero-name {
+        font-family: "Figtree", sans-serif;
+        font-weight: 800;
+        font-size: clamp(3rem, 6vw, 5.5rem);
+        line-height: 0.95;
+        letter-spacing: -0.04em;
+        margin-bottom: 1.2rem;
+        opacity: 0;
+      }
+      .hero-name .line {
+        display: block;
+        overflow: hidden;
+      }
+      .hero-name .highlight {
+        color: var(--accent);
+      }
+
+      .hero-role {
+        font-family: "DM Mono", monospace;
+        font-size: 0.85rem;
+        color: var(--muted);
+        margin-bottom: 2rem;
+        opacity: 0;
+      }
+      .hero-role .typing {
+        color: var(--accent3);
+      }
+
+      .hero-bio {
+        font-size: 1rem;
+        line-height: 1.75;
+        color: rgba(240, 237, 230, 0.65);
+        max-width: 440px;
+        margin-bottom: 2.5rem;
+        opacity: 0;
+      }
+
+      .hero-actions {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        opacity: 0;
+      }
+      .btn-primary {
+        background: var(--accent);
+        color: var(--bg);
+        font-family: "DM Mono", monospace;
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 0.85rem 2rem;
+        border: none;
+        border-radius: 2px;
+        cursor: none;
+        font-weight: 500;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+      }
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(200, 240, 74, 0.25);
+      }
+      .btn-ghost {
+        color: var(--text);
+        font-family: "DM Mono", monospace;
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 0.85rem 2rem;
+        border: 1px solid var(--border);
+        background: transparent;
+        border-radius: 2px;
+        cursor: none;
+        transition:
+          border-color 0.2s,
+          color 0.2s;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .btn-ghost:hover {
+        border-color: var(--text);
+      }
+
+      /* Hero right */
+      .hero-right {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        opacity: 0;
+      }
+      .stat-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+        transition:
+          border-color 0.3s,
+          transform 0.3s;
+      }
+      .stat-card:hover {
+        border-color: rgba(200, 240, 74, 0.3);
+        transform: translateX(4px);
+      }
+      .stat-num {
+        font-family: "Figtree", sans-serif;
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--accent);
+        line-height: 1;
+        min-width: 80px;
+      }
+      .stat-label {
+        font-size: 0.85rem;
+        color: var(--muted);
+        line-height: 1.4;
+      }
+      .stat-label strong {
+        display: block;
+        color: var(--text);
+        margin-bottom: 0.2rem;
+        font-size: 0.95rem;
+      }
+
+      .availability-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.6rem 1rem;
+        background: rgba(74, 240, 200, 0.08);
+        border: 1px solid rgba(74, 240, 200, 0.2);
+        border-radius: 100px;
+        font-family: "DM Mono", monospace;
+        font-size: 0.7rem;
+        letter-spacing: 0.08em;
+        color: var(--accent3);
+        margin-bottom: 0.5rem;
+        width: fit-content;
+      }
+      .dot-pulse {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--accent3);
+        animation: pulse 2s infinite;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.4;
+          transform: scale(0.8);
+        }
+      }
+
+      /* SECTION COMMONS */
+      section {
+        padding: 6rem 3rem;
+        position: relative;
+      }
+      .section-label {
+        font-family: "DM Mono", monospace;
+        font-size: 0.7rem;
+        letter-spacing: 0.2em;
+        color: var(--accent);
+        text-transform: uppercase;
+        margin-bottom: 0.8rem;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
+      .section-label::before {
+        content: "";
+        width: 24px;
+        height: 1px;
+        background: var(--accent);
+      }
+      .section-title {
+        font-family: "Figtree", sans-serif;
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        margin-bottom: 3rem;
+        line-height: 1.1;
+      }
+
+      /* EXPERIENCE */
+      #experience {
+        background: var(--surface);
+        border-top: 1px solid var(--border);
+      }
+      .exp-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+      .exp-item {
+        display: grid;
+        grid-template-columns: 200px 1fr;
+        gap: 2rem;
+        padding: 2.5rem 1.5rem;
+        border-bottom: 1px solid var(--border);
+        position: relative;
+        border-radius: 10px;
+        transition: background 0.3s;
+      }
+      .exp-item::before {
+        content: "";
+        position: absolute;
+        left: 1.5rem;
+        right: 1.5rem;
+        top: 0;
+        height: 2px;
+        background: linear-gradient(90deg, var(--accent), transparent);
+        border-radius: 2px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      .exp-item:hover::before {
+        opacity: 1;
+      }
+      .exp-item:hover {
+        background: var(--surface2);
+      }
+      .exp-meta {
+        padding-right: 2rem;
+      }
+      .exp-date {
+        font-family: "DM Mono", monospace;
+        font-size: 0.7rem;
+        color: var(--muted);
+        letter-spacing: 0.05em;
+        margin-bottom: 0.5rem;
+      }
+      .exp-company {
+        font-family: "Figtree", sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 0.3rem;
+      }
+      .exp-tag {
+        font-family: "DM Mono", monospace;
+        font-size: 0.65rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 0.2rem 0.6rem;
+        border-radius: 2px;
+        background: rgba(200, 240, 74, 0.08);
+        color: var(--accent);
+        border: 1px solid rgba(200, 240, 74, 0.15);
+        display: inline-block;
+        margin-top: 0.5rem;
+      }
+      .exp-role {
+        font-family: "Figtree", sans-serif;
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 0.8rem;
+        color: var(--text);
+      }
+      .exp-desc {
+        font-size: 0.9rem;
+        color: rgba(240, 237, 230, 0.6);
+        line-height: 1.7;
+      }
+      .exp-bullets {
+        margin-top: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+      }
+      .exp-bullet {
+        font-size: 0.85rem;
+        color: rgba(240, 237, 230, 0.55);
+        display: flex;
+        gap: 0.6rem;
+        align-items: flex-start;
+      }
+      .exp-bullet::before {
+        content: "→";
+        color: var(--accent);
+        flex-shrink: 0;
+        margin-top: 0.1rem;
+      }
+
+      /* PROJECTS */
+      #projects {
+        background: var(--bg);
+      }
+      .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .project-card {
+        background: var(--surface);
+        padding: 2rem;
+        transition: background 0.3s;
+        position: relative;
+        overflow: hidden;
+        cursor: none;
+      }
+      .project-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(200, 240, 74, 0.04) 0%,
+          transparent 60%
+        );
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+      .project-card:hover::after {
+        opacity: 1;
+      }
+      .project-card:hover {
+        background: var(--surface2);
+      }
+      .project-num {
+        font-family: "DM Mono", monospace;
+        font-size: 0.65rem;
+        color: var(--muted);
+        letter-spacing: 0.1em;
+        margin-bottom: 1.2rem;
+      }
+      .project-name {
+        font-family: "Figtree", sans-serif;
+        font-size: 1.15rem;
+        font-weight: 700;
+        margin-bottom: 0.6rem;
+      }
+      .project-desc {
+        font-size: 0.8rem;
+        color: rgba(240, 237, 230, 0.5);
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+      }
+      .project-stack {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        margin-bottom: 1.5rem;
+      }
+      .stack-pill {
+        font-family: "DM Mono", monospace;
+        font-size: 0.6rem;
+        letter-spacing: 0.08em;
+        padding: 0.2rem 0.55rem;
+        border: 1px solid var(--border);
+        border-radius: 100px;
+        color: var(--muted);
+      }
+      .project-link {
+        font-family: "DM Mono", monospace;
+        font-size: 0.7rem;
+        letter-spacing: 0.08em;
+        color: var(--accent);
+        text-decoration: none;
+        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        transition: gap 0.2s;
+        z-index: 99999999999;
+        position: relative;
+      }
+      .project-link:hover {
+        gap: 0.6rem;
+      }
+
+      /* SKILLS */
+      #skills {
+        background: var(--surface);
+        border-top: 1px solid var(--border);
+      }
+      .skills-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+      }
+      .skill-group-title {
+        font-family: "DM Mono", monospace;
+        font-size: 0.7rem;
+        letter-spacing: 0.15em;
+        color: var(--muted);
+        text-transform: uppercase;
+        margin-bottom: 1.2rem;
+      }
+      .skill-items {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+      }
+      .skill-item {
+        font-family: "DM Mono", monospace;
+        font-size: 0.75rem;
+        padding: 0.45rem 1rem;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        color: var(--text);
+        background: var(--bg);
+        transition:
+          border-color 0.2s,
+          color 0.2s,
+          background 0.2s;
+        cursor: default;
+      }
+      .skill-item:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+        background: rgba(200, 240, 74, 0.05);
+      }
+      .skill-item.highlight-skill {
+        border-color: rgba(200, 240, 74, 0.4);
+        color: var(--accent);
+        background: rgba(200, 240, 74, 0.06);
+      }
+
+      /* CONTACT */
+      #contact {
+        background: var(--bg);
+        text-align: center;
+      }
+      .contact-inner {
+        max-width: 640px;
+        margin: 0 auto;
+      }
+      .contact-big {
+        font-family: "Figtree", sans-serif;
+        font-size: clamp(2.5rem, 6vw, 5rem);
+        font-weight: 800;
+        letter-spacing: -0.04em;
+        line-height: 1;
+        margin-bottom: 1.5rem;
+      }
+      .contact-big .accent {
+        color: var(--accent);
+      }
+      .contact-sub {
+        font-size: 0.95rem;
+        color: var(--muted);
+        margin-bottom: 3rem;
+        line-height: 1.7;
+      }
+      .contact-links {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+      .contact-link {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-family: "DM Mono", monospace;
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--text);
+        text-decoration: none;
+        padding: 0.85rem 1.5rem;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        transition:
+          border-color 0.2s,
+          color 0.2s;
+      }
+      .contact-link:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+
+      /* FOOTER */
+      footer {
+        border-top: 1px solid var(--border);
+        padding: 1.5rem 3rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-family: "DM Mono", monospace;
+        font-size: 0.65rem;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+      }
+
+      /* MODAL */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 200;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(12px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.35s;
+      }
+      .modal-overlay.open {
+        opacity: 1;
+        pointer-events: all;
+      }
+      .modal {
+        background: var(--surface);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        width: 100%;
+        max-width: 760px;
+        max-height: 85vh;
+        overflow-y: auto;
+        padding: 3rem;
+        position: relative;
+        transform: translateY(30px);
+        transition: transform 0.35s;
+      }
+      .modal-overlay.open .modal {
+        transform: translateY(0);
+      }
+      .modal-close {
+        position: sticky;
+        top: 0;
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 1.5rem;
+      }
+      .modal-close button {
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        color: var(--muted);
+        font-family: "DM Mono", monospace;
+        font-size: 0.7rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        cursor: none;
+        transition:
+          color 0.2s,
+          border-color 0.2s;
+      }
+      .modal-close button:hover {
+        color: var(--text);
+        border-color: var(--text);
+      }
+      .modal-title {
+        font-family: "Figtree", sans-serif;
+        font-size: 1.8rem;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        margin-bottom: 0.5rem;
+      }
+      .modal-sub {
+        font-size: 0.85rem;
+        color: var(--muted);
+        margin-bottom: 2.5rem;
+      }
+
+      .modal-section {
+        margin-bottom: 2.5rem;
+      }
+      .modal-section-title {
+        font-family: "DM Mono", monospace;
+        font-size: 0.7rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--border);
+      }
+      .edu-item {
+        margin-bottom: 1.2rem;
+      }
+      .edu-degree {
+        font-family: "Figtree", sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 0.2rem;
+      }
+      .edu-school {
+        font-size: 0.85rem;
+        color: var(--muted);
+        margin-bottom: 0.2rem;
+      }
+      .edu-grade {
+        font-family: "DM Mono", monospace;
+        font-size: 0.75rem;
+        color: var(--accent);
+      }
+
+      .cert-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1rem;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        margin-bottom: 0.8rem;
+        transition: border-color 0.2s;
+      }
+      .cert-item:hover {
+        border-color: rgba(200, 240, 74, 0.25);
+      }
+      .cert-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 6px;
+        background: rgba(200, 240, 74, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--accent);
+        font-size: 1rem;
+        flex-shrink: 0;
+      }
+      .cert-name {
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 0.2rem;
+      }
+      .cert-org {
+        font-family: "DM Mono", monospace;
+        font-size: 0.7rem;
+        color: var(--muted);
+      }
+
+      .training-item {
+        padding: 1rem 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .training-item:last-child {
+        border-bottom: none;
+      }
+      .training-name {
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 0.3rem;
+      }
+      .training-desc {
+        font-size: 0.8rem;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .personal-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 1rem;
+      }
+      .personal-item {
+        padding: 1rem;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        text-align: center;
+      }
+      .personal-label {
+        font-family: "DM Mono", monospace;
+        font-size: 0.6rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 0.4rem;
+      }
+      .personal-val {
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: var(--text);
+      }
+
+      /* Scroll bar */
+      ::-webkit-scrollbar {
+        width: 4px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--bg);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 2px;
+      }
+
+      /* Marquee */
+      .marquee-wrap {
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+        overflow: hidden;
+        padding: 1rem 0;
+        background: var(--surface);
+      }
+      .marquee-inner {
+        display: flex;
+        gap: 3rem;
+        animation: marquee 20s linear infinite;
+        width: max-content;
+      }
+      .marquee-item {
+        font-family: "DM Mono", monospace;
+        font-size: 0.75rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        white-space: nowrap;
+      }
+      .marquee-item .dot {
+        color: var(--accent);
+        font-size: 0.5rem;
+      }
+      @keyframes marquee {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-50%);
+        }
+      }
+
+      @media (max-width: 900px) {
+        #hero {
+          grid-template-columns: 1fr;
+        }
+        .hero-right {
+          display: none;
+        }
+        .projects-grid {
+          grid-template-columns: 1fr;
+        }
+        .skills-container {
+          grid-template-columns: 1fr;
+        }
+        .exp-item {
+          grid-template-columns: 1fr;
+        }
+        .personal-grid {
+          grid-template-columns: 1fr;
+        }
+        nav {
+          padding: 1.2rem 1.5rem;
+        }
+        section {
+          padding: 5rem 1.5rem;
+        }
+      }
+
+      /* LIGHT MODE OVERRIDES */
+      :root.light body {
+        background: var(--bg);
+      }
+      :root.light nav {
+        background: rgba(245, 244, 240, 0.92);
+      }
+      :root.light .cursor-ring {
+        border-color: rgba(106, 168, 0, 0.5);
+      }
+      :root.light .hero-grid-line {
+        background-image:
+          linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+      }
+      :root.light .exp-desc {
+        color: rgba(26, 26, 22, 0.6);
+      }
+      :root.light .exp-bullet {
+        color: rgba(26, 26, 22, 0.55);
+      }
+      :root.light .project-desc {
+        color: rgba(26, 26, 22, 0.55);
+      }
+      :root.light .hero-bio {
+        color: rgba(26, 26, 22, 0.65);
+      }
+      :root.light .availability-badge {
+        background: rgba(0, 138, 110, 0.08);
+        border-color: rgba(0, 138, 110, 0.25);
+      }
+      :root.light .dot-pulse {
+        background: var(--accent3);
+      }
+      :root.light .marquee-wrap {
+        background: var(--surface);
+      }
+      :root.light .contact-big .accent {
+        color: var(--accent);
+      }
+      :root.light .skill-item {
+        background: var(--bg);
+      }
+      :root.light .skill-item.highlight-skill {
+        border-color: rgba(106, 168, 0, 0.4);
+        background: rgba(106, 168, 0, 0.07);
+      }
+      :root.light .project-card::after {
+        background: linear-gradient(
+          135deg,
+          rgba(106, 168, 0, 0.06) 0%,
+          transparent 60%
+        );
+      }
+      :root.light .modal-overlay {
+        background: rgba(200, 200, 195, 0.7);
+      }
+      :root.light .cert-icon {
+        background: rgba(106, 168, 0, 0.12);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <!-- NAV -->
+    <nav id="navbar">
+      <a href="#" class="nav-logo">GS<span>.</span></a>
+      <div class="nav-links">
+        <a href="#experience">Work</a>
+        <a href="#projects">Projects</a>
+        <a href="#skills">Skills</a>
+        <a href="#contact">Contact</a>
+        <button
+          class="theme-toggle"
+          id="themeToggle"
+          onclick="toggleTheme()"
+          title="Toggle theme"
+        >
+          <span class="toggle-knob"></span>
+        </button>
+        <button class="nav-cta" onclick="openModal()">Full Profile</button>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <section id="hero">
+      <div class="hero-grid-line"></div>
+      <div class="hero-left">
+        <div class="hero-tag">Available for freelance</div>
+        <h1 class="hero-name">
+          <span class="line">Ghevaram</span>
+          <span class="line">Suthar<span class="highlight">.</span></span>
+        </h1>
+        <p class="hero-role">
+          <span class="typing" id="typed-role"></span>
+        </p>
+        <p class="hero-bio">
+          Frontend-focused developer with 2+ years building responsive,
+          performant web applications. Specializing in React ecosystems and
+          pixel-perfect UI — currently based in Pune, Maharashtra.
+        </p>
+        <div class="hero-actions">
+          <button class="btn-primary" onclick="openModal()">
+            View Full Profile
+          </button>
+          <a href="mailto:ghevaramsuthar21@gmail.com" class="btn-ghost"
+            >Email Me ↗</a
+          >
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="availability-badge">
+          <span class="dot-pulse"></span>
+          Open to opportunities
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">
+            40<span style="font-size: 1.5rem; color: var(--muted)">+</span>
+          </div>
+          <div class="stat-label">
+            <strong>Websites Delivered</strong>Responsive, production-grade
+            builds
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">
+            7<span style="font-size: 1.5rem; color: var(--muted)">+</span>
+          </div>
+          <div class="stat-label">
+            <strong>Freelance Clients</strong>Real estate, e-commerce, marketing
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">
+            2<span style="font-size: 1.5rem; color: var(--muted)">yr</span>
+          </div>
+          <div class="stat-label">
+            <strong>Industry Experience</strong>Junior to Senior in 18 months
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="marquee-wrap">
+      <div class="marquee-inner">
+        <span class="marquee-item">React.js <span class="dot">●</span></span>
+        <span class="marquee-item">Next.js <span class="dot">●</span></span>
+        <span class="marquee-item"
+          >Tailwind CSS <span class="dot">●</span></span
+        >
+        <span class="marquee-item">GSAP <span class="dot">●</span></span>
+        <span class="marquee-item">WordPress <span class="dot">●</span></span>
+        <span class="marquee-item">JavaScript <span class="dot">●</span></span>
+        <span class="marquee-item">ASP.NET MVC <span class="dot">●</span></span>
+        <span class="marquee-item"
+          >SEO Optimization <span class="dot">●</span></span
+        >
+        <span class="marquee-item"
+          >GSAP Animations <span class="dot">●</span></span
+        >
+        <span class="marquee-item">React.js <span class="dot">●</span></span>
+        <span class="marquee-item">Next.js <span class="dot">●</span></span>
+        <span class="marquee-item"
+          >Tailwind CSS <span class="dot">●</span></span
+        >
+        <span class="marquee-item">GSAP <span class="dot">●</span></span>
+        <span class="marquee-item">WordPress <span class="dot">●</span></span>
+        <span class="marquee-item">JavaScript <span class="dot">●</span></span>
+        <span class="marquee-item">ASP.NET MVC <span class="dot">●</span></span>
+        <span class="marquee-item"
+          >SEO Optimization <span class="dot">●</span></span
+        >
+        <span class="marquee-item"
+          >GSAP Animations <span class="dot">●</span></span
+        >
+      </div>
+    </div>
+
+    <!-- EXPERIENCE -->
+    <section id="experience">
+      <div class="section-label">Experience</div>
+      <h2 class="section-title">Where I've worked</h2>
+      <div class="exp-grid">
+        <div class="exp-item reveal-item">
+          <div class="exp-meta">
+            <div class="exp-date">Feb 2024 — Present</div>
+            <div class="exp-company">Ink Media</div>
+            <span class="exp-tag">Full-time</span>
+          </div>
+          <div class="exp-content">
+            <div class="exp-role">Senior Developer</div>
+            <div class="exp-desc">
+              Leading frontend development for a creative media agency, building
+              high-performance websites with advanced UI animations.
+            </div>
+            <div class="exp-bullets">
+              <div class="exp-bullet">
+                Created and maintained 40+ responsive, user-friendly websites
+                enhancing user engagement significantly.
+              </div>
+              <div class="exp-bullet">
+                Optimized performance using PageSpeed Insights and Uber Suggest
+                for advanced front-end optimization.
+              </div>
+              <div class="exp-bullet">
+                Engineered landing pages with GSAP for immersive scroll-driven
+                experiences.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="exp-item reveal-item">
+          <div class="exp-meta">
+            <div class="exp-date">Jan 2024 — Present</div>
+            <div class="exp-company">Self-Employed</div>
+            <span class="exp-tag">Freelance</span>
+          </div>
+          <div class="exp-content">
+            <div class="exp-role">Freelance Web Developer</div>
+            <div class="exp-desc">
+              End-to-end project delivery for clients across real estate,
+              digital marketing, and e-commerce verticals.
+            </div>
+            <div class="exp-bullets">
+              <div class="exp-bullet">
+                7+ clients served using React.js, Next.js, Tailwind CSS, and
+                WordPress.
+              </div>
+              <div class="exp-bullet">
+                Managed full project lifecycle: requirements → design → dev →
+                deployment.
+              </div>
+              <div class="exp-bullet">
+                Built long-term client relationships through clear communication
+                and on-time delivery.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="exp-item reveal-item">
+          <div class="exp-meta">
+            <div class="exp-date">Jun 2023 — Feb 2024</div>
+            <div class="exp-company">Smartnet Software</div>
+            <span class="exp-tag">Full-time</span>
+          </div>
+          <div class="exp-content">
+            <div class="exp-role">Junior Software Engineer</div>
+            <div class="exp-desc">
+              Focused on designing intuitive front-end interfaces while actively
+              contributing to back-end development.
+            </div>
+            <div class="exp-bullets">
+              <div class="exp-bullet">
+                Improved application functionality and user flow through
+                interface redesigns.
+              </div>
+              <div class="exp-bullet">
+                Contributed to redesign of the company's core website improving
+                accessibility.
+              </div>
+              <div class="exp-bullet">
+                Collaborated closely with backend teams bridging front-end and
+                API integrations.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+      <div class="section-label">Projects</div>
+      <h2 class="section-title">Selected work</h2>
+      <div class="projects-grid">
+        <div class="project-card reveal-item">
+          <div class="project-num">01</div>
+          <div class="project-name">GM Modular</div>
+          <div class="project-desc">
+            Developed front-end components ensuring cross-browser compatibility
+            and a seamless UX using ASP.NET MVC.
+          </div>
+          <div class="project-stack">
+            <span class="stack-pill">ASP.NET MVC</span>
+            <span class="stack-pill">HTML/CSS</span>
+            <span class="stack-pill">JavaScript</span>
+          </div>
+          <a
+            href="https://www.gmmodular.com/"
+            target="_blank"
+            class="project-link"
+            >Live Site →</a
+          >
+        </div>
+        <div class="project-card reveal-item">
+          <div class="project-num">02</div>
+          <div class="project-name">Smartnet Software</div>
+          <div class="project-desc">
+            Redesigned the company's core website, improving accessibility and
+            overall user experience from scratch.
+          </div>
+          <div class="project-stack">
+            <span class="stack-pill">HTML</span>
+            <span class="stack-pill">CSS</span>
+            <span class="stack-pill">JavaScript</span>
+          </div>
+          <a
+            href="https://smartnetsoftware.com/"
+            target="_blank"
+            class="project-link"
+            >Live Site →</a
+          >
+        </div>
+        <div class="project-card reveal-item">
+          <div class="project-num">03</div>
+          <div class="project-name">Ink Media</div>
+          <div class="project-desc">
+            Designed and engineered a landing page using GSAP animations for a
+            bold, interactive brand experience.
+          </div>
+          <div class="project-stack">
+            <span class="stack-pill">GSAP</span>
+            <span class="stack-pill">JavaScript</span>
+            <span class="stack-pill">CSS</span>
+          </div>
+          <a href="https://inkmedia.in/" target="_blank" class="project-link"
+            >Live Site →</a
+          >
+        </div>
+        <div class="project-card reveal-item">
+          <div class="project-num">04</div>
+          <div class="project-name">Groups Godown</div>
+          <div class="project-desc">
+            Built the front-end in ReactJS with Tailwind CSS for a modern,
+            scalable web application interface.
+          </div>
+          <div class="project-stack">
+            <span class="stack-pill">ReactJS</span>
+            <span class="stack-pill">Tailwind CSS</span>
+          </div>
+          <a
+            href="https://www.groupgodown.com/"
+            target="_blank"
+            class="project-link"
+            >Live Site →</a
+          >
+        </div>
+        <div class="project-card reveal-item">
+          <div class="project-num">05</div>
+          <div class="project-name">Meta Motives</div>
+          <div class="project-desc">
+            Led end-to-end development enhancing SEO performance and boosting
+            organic traffic for a digital agency.
+          </div>
+          <div class="project-stack">
+            <span class="stack-pill">Next.js</span>
+            <span class="stack-pill">SEO</span>
+            <span class="stack-pill">Tailwind CSS</span>
+          </div>
+          <a
+            href="https://metamotives.com/"
+            target="_blank"
+            class="project-link"
+            >Live Site →</a
+          >
+        </div>
+        <div
+          class="project-card reveal-item"
+          style="
+            background: rgba(200, 240, 74, 0.04);
+            border-left: 2px solid var(--accent);
+          "
+        >
+          <div class="project-num" style="color: var(--accent)">+More</div>
+          <div class="project-name" style="color: var(--accent)">
+            And counting...
+          </div>
+          <div class="project-desc">
+            40+ websites built across industries. Freelance projects spanning
+            real estate, e-commerce, and digital marketing.
+          </div>
+          <div style="margin-top: auto; z-index: 99999999; position: relative">
+            <button
+              class="btn-ghost"
+              style="font-size: 0.65rem; padding: 0.6rem 1rem"
+              onclick="openModal()"
+            >
+              View Full Profile
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills">
+      <div class="section-label">Skills</div>
+      <h2 class="section-title">Tech I work with</h2>
+      <div class="skills-container">
+        <div>
+          <div class="skill-group-title">Languages</div>
+          <div class="skill-items">
+            <span class="skill-item highlight-skill">HTML5</span>
+            <span class="skill-item highlight-skill">CSS3</span>
+            <span class="skill-item highlight-skill">JavaScript</span>
+          </div>
+          <br />
+          <div class="skill-group-title">Frameworks & Libraries</div>
+          <div class="skill-items">
+            <span class="skill-item highlight-skill">ReactJS</span>
+            <span class="skill-item highlight-skill">NextJS</span>
+            <span class="skill-item highlight-skill">Bootstrap</span>
+            <span class="skill-item highlight-skill">Tailwind CSS</span>
+            <span class="skill-item highlight-skill">GSAP</span>
+            <span class="skill-item highlight-skill">LocomotiveJS</span>
+          </div>
+        </div>
+        <div>
+          <div class="skill-group-title">Tools & Platforms</div>
+          <div class="skill-items">
+            <span class="skill-item">WordPress</span>
+            <span class="skill-item">ASP.NET MVC</span>
+            <span class="skill-item">PageSpeed Insights</span>
+            <span class="skill-item">SEO Tools</span>
+            <span class="skill-item">GitHub</span>
+          </div>
+          <br />
+          <div class="skill-group-title">Soft Skills</div>
+          <div class="skill-items">
+            <span class="skill-item">Communication</span>
+            <span class="skill-item">Teamwork</span>
+            <span class="skill-item">Creativity</span>
+            <span class="skill-item">Attention to Detail</span>
+            <span class="skill-item">Client Management</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="contact-inner">
+        <h2 class="contact-big">
+          Let's build something <span class="accent">great.</span>
+        </h2>
+        <p class="contact-sub">
+          Open to freelance projects, full-time roles, and interesting collabs.
+          Based in Pune — working globally.
+        </p>
+        <div class="contact-links">
+          <a href="mailto:ghevaramsuthar21@gmail.com" class="contact-link"
+            >✉ Email</a
+          >
+          <a
+            href="https://www.linkedin.com/in/ghevaram-suthar-63209321b"
+            target="_blank"
+            class="contact-link"
+            >in LinkedIn</a
+          >
+          <a
+            href="https://github.com/ghevaram"
+            target="_blank"
+            class="contact-link"
+            >⌥ GitHub</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <span>© 2025 Ghevaram Suthar</span>
+      <span>Pune, Maharashtra, IN</span>
+    </footer>
+
+    <!-- MODAL -->
+    <div class="modal-overlay" id="modal" onclick="handleOverlayClick(event)">
+      <div class="modal">
+        <div class="modal-close">
+          <button onclick="closeModal()">✕ Close</button>
+        </div>
+        <div class="modal-title">Ghevaram Suthar</div>
+        <div class="modal-sub">
+          Full profile — Education, Certifications, Training & Personal Details
+        </div>
+
+        <div class="modal-section">
+          <div class="modal-section-title">Education</div>
+          <div class="edu-item">
+            <div class="edu-degree">
+              Bachelor of Engineering — Mechanical Engineering
+            </div>
+            <div class="edu-school">
+              RMD Sinhgad School of Engineering, Savitribai Phule Pune
+              University · 2022
+            </div>
+            <div class="edu-grade">CGPA: 7.98 / 10.00</div>
+          </div>
+          <div class="edu-item">
+            <div class="edu-degree">12th HSC</div>
+            <div class="edu-school">
+              Sinhgad Institutes, Maharashtra State Board · HSC
+            </div>
+            <div class="edu-grade">Percentage: 61.08%</div>
+          </div>
+          <div class="edu-item">
+            <div class="edu-degree">10th SSC</div>
+            <div class="edu-school">
+              Mickey's High School, Maharashtra State Board · SSC
+            </div>
+            <div class="edu-grade">Percentage: 61.60%</div>
+          </div>
+        </div>
+
+        <div class="modal-section">
+          <div class="modal-section-title">Certifications</div>
+          <div class="cert-item">
+            <div class="cert-icon">🐍</div>
+            <div>
+              <div class="cert-name">Basics of Python</div>
+              <div class="cert-org">
+                Infosys Springboard — Data types, variables, operations in
+                Python
+              </div>
+            </div>
+          </div>
+          <div class="cert-item">
+            <div class="cert-icon">🏆</div>
+            <div>
+              <div class="cert-name">
+                Certificate of Outstanding Performance
+              </div>
+              <div class="cert-org">
+                InternsElite — Recognized for excellence in minor and major
+                internship projects
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-section">
+          <div class="modal-section-title">Training & Workshops</div>
+          <div class="training-item">
+            <div class="training-name">
+              TCS iON Career Edge — Young Professional
+            </div>
+            <div class="training-desc">
+              Communication & Presentation Skills, Soft Skills, Career Guidance,
+              Resume Writing, Group Discussion & Interview Skills, Business
+              Etiquette, Effective Email Writing, Accounting Basics, IT
+              Fundamentals, and AI Overview.
+            </div>
+          </div>
+          <div class="training-item">
+            <div class="training-name">
+              Generic Online Training in Cyber Security
+            </div>
+            <div class="training-desc">
+              Cyber Hygiene Practices — Ministry of Electronics & IT (MeitY),
+              Government of India.
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-section">
+          <div class="modal-section-title">Personal Details</div>
+          <div class="personal-grid">
+            <div class="personal-item">
+              <div class="personal-label">Date of Birth</div>
+              <div class="personal-val">24 Aug 1997</div>
+            </div>
+            <div class="personal-item">
+              <div class="personal-label">Nationality</div>
+              <div class="personal-val">Indian</div>
+            </div>
+            <div class="personal-item">
+              <div class="personal-label">Languages</div>
+              <div class="personal-val">EN · HI · MR</div>
+            </div>
+            <div class="personal-item">
+              <div class="personal-label">Location</div>
+              <div class="personal-val">Pune, MH</div>
+            </div>
+            <div class="personal-item">
+              <div class="personal-label">Background</div>
+              <div class="personal-val">Mech → Web Dev</div>
+            </div>
+            <div class="personal-item">
+              <div class="personal-label">Status</div>
+              <div class="personal-val" style="color: var(--accent3)">
+                Open to Work
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      gsap.registerPlugin(ScrollTrigger, TextPlugin);
+
+      // Cursor
+      const cursor = document.getElementById("cursor");
+      const cursorRing = document.getElementById("cursorRing");
+      let mouseX = 0,
+        mouseY = 0;
+      document.addEventListener("mousemove", (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        gsap.to(cursor, { x: mouseX, y: mouseY, duration: 0.1 });
+        gsap.to(cursorRing, { x: mouseX, y: mouseY, duration: 0.25 });
+      });
+
+      // Typed role
+      const roles = [
+        "Senior Developer",
+        "Frontend Specialist",
+        "React Developer",
+        "UI Engineer",
+      ];
+      let roleIdx = 0;
+      function typeRole() {
+        const el = document.getElementById("typed-role");
+        const role = roles[roleIdx % roles.length];
+        gsap.to(el, {
+          text: role,
+          duration: 0.8,
+          ease: "none",
+          onComplete: () => {
+            setTimeout(() => {
+              gsap.to(el, {
+                text: "",
+                duration: 0.4,
+                ease: "none",
+                onComplete: () => {
+                  roleIdx++;
+                  typeRole();
+                },
+              });
+            }, 2000);
+          },
+        });
+      }
+
+      // Hero entrance
+      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+      tl.to(".hero-tag", { opacity: 1, y: 0, duration: 0.6, delay: 0.3 })
+        .to(".hero-name", { opacity: 1, y: 0, duration: 0.8 }, "-=0.3")
+        .to(".hero-role", { opacity: 1, duration: 0.5 }, "-=0.3")
+        .to(".hero-bio", { opacity: 1, y: 0, duration: 0.6 }, "-=0.3")
+        .to(".hero-actions", { opacity: 1, y: 0, duration: 0.5 }, "-=0.3")
+        .to(".hero-right", { opacity: 1, x: 0, duration: 0.7 }, "-=0.5")
+        .call(typeRole);
+
+      gsap.set(".hero-name", { y: 30 });
+      gsap.set(".hero-bio", { y: 20 });
+      gsap.set(".hero-actions", { y: 20 });
+      gsap.set(".hero-right", { x: 40 });
+
+      // Scroll reveals
+      gsap.utils.toArray(".reveal-item").forEach((el, i) => {
+        gsap.from(el, {
+          scrollTrigger: {
+            trigger: el,
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
+          opacity: 0,
+          y: 40,
+          duration: 0.7,
+          delay: i * 0.08,
+          ease: "power2.out",
+        });
+      });
+
+      // Section titles
+      gsap.utils.toArray(".section-title").forEach((el) => {
+        gsap.from(el, {
+          scrollTrigger: { trigger: el, start: "top 88%" },
+          opacity: 0,
+          y: 30,
+          duration: 0.7,
+          ease: "power2.out",
+        });
+      });
+
+      // Skill items stagger
+      gsap.from(".skill-item", {
+        scrollTrigger: { trigger: "#skills", start: "top 75%" },
+        opacity: 0,
+        scale: 0.9,
+        duration: 0.4,
+        stagger: 0.04,
+        ease: "back.out(1.5)",
+      });
+
+      // Stat cards
+      gsap.utils.toArray(".stat-card").forEach((card, i) => {
+        gsap.from(card, {
+          scrollTrigger: { trigger: card, start: "top 90%" },
+          opacity: 0,
+          x: 30,
+          duration: 0.5,
+          delay: i * 0.1,
+          ease: "power2.out",
+        });
+      });
+
+      // Contact section
+      gsap.from(".contact-big", {
+        scrollTrigger: { trigger: "#contact", start: "top 75%" },
+        opacity: 0,
+        y: 50,
+        duration: 0.9,
+        ease: "power3.out",
+      });
+      gsap.from(".contact-link", {
+        scrollTrigger: { trigger: "#contact", start: "top 70%" },
+        opacity: 0,
+        y: 20,
+        stagger: 0.1,
+        duration: 0.5,
+        ease: "power2.out",
+      });
+
+      // Navbar scroll effect
+      ScrollTrigger.create({
+        start: "top -60",
+        onUpdate: (self) => {
+          gsap.to("#navbar", {
+            borderBottomColor:
+              self.progress > 0 ? "rgba(255,255,255,0.1)" : "transparent",
+            duration: 0.3,
+          });
+        },
+      });
+
+      // Modal
+      function openModal() {
+        document.getElementById("modal").classList.add("open");
+        document.body.style.overflow = "hidden";
+        gsap.from(".modal-section", {
+          opacity: 0,
+          y: 20,
+          stagger: 0.1,
+          duration: 0.5,
+          ease: "power2.out",
+          delay: 0.2,
+        });
+      }
+      function closeModal() {
+        document.getElementById("modal").classList.remove("open");
+        document.body.style.overflow = "";
+      }
+      function handleOverlayClick(e) {
+        if (e.target === document.getElementById("modal")) closeModal();
+      }
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeModal();
+      });
+
+      // Theme toggle
+      function toggleTheme() {
+        document.documentElement.classList.toggle("light");
+        const isLight = document.documentElement.classList.contains("light");
+        localStorage.setItem("theme", isLight ? "light" : "dark");
+      }
+
+      // Restore saved theme
+      (function () {
+        const saved = localStorage.getItem("theme");
+        if (saved === "light") document.documentElement.classList.add("light");
+      })();
+
+      // Hover tilt on project cards
+      document.querySelectorAll(".project-card").forEach((card) => {
+        card.addEventListener("mousemove", (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = (e.clientX - rect.left) / rect.width - 0.5;
+          const y = (e.clientY - rect.top) / rect.height - 0.5;
+          gsap.to(card, {
+            rotateX: -y * 6,
+            rotateY: x * 6,
+            duration: 0.3,
+            ease: "power2.out",
+            transformPerspective: 600,
+          });
+        });
+        card.addEventListener("mouseleave", () => {
+          gsap.to(card, {
+            rotateX: 0,
+            rotateY: 0,
+            duration: 0.5,
+            ease: "power2.out",
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
