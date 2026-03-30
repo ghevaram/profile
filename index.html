@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -13,7 +14,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js"></script>
-
     <style>
       :root {
         --bg: #0a0a08;
@@ -28,7 +28,6 @@
         --red: #f04a6e;
         --shadow: rgba(0, 0, 0, 0.4);
       }
-
       :root.light {
         --bg: #f5f4f0;
         --surface: #eceae4;
@@ -42,7 +41,6 @@
         --red: #c8003a;
         --shadow: rgba(0, 0, 0, 0.12);
       }
-
       *,
       *::before,
       *::after {
@@ -50,11 +48,9 @@
         margin: 0;
         padding: 0;
       }
-
       html {
         scroll-behavior: smooth;
       }
-
       body {
         background: var(--bg);
         color: var(--text);
@@ -63,7 +59,7 @@
         cursor: none;
       }
 
-      /* Custom Cursor */
+      /* Cursor */
       .cursor {
         width: 10px;
         height: 10px;
@@ -75,10 +71,7 @@
         pointer-events: none;
         z-index: 9999;
         transform: translate(-50%, -50%);
-        transition:
-          width 0.2s,
-          height 0.2s,
-          background 0.2s;
+        transition: width 0.2s, height 0.2s, background 0.2s;
       }
       .cursor-ring {
         width: 36px;
@@ -91,9 +84,7 @@
         pointer-events: none;
         z-index: 9998;
         transform: translate(-50%, -50%);
-        transition:
-          width 0.3s,
-          height 0.3s;
+        transition: width 0.3s, height 0.3s;
       }
       body:has(a:hover) .cursor,
       body:has(button:hover) .cursor {
@@ -106,7 +97,7 @@
         height: 56px;
       }
 
-      /* Noise overlay */
+      /* Noise */
       body::before {
         content: "";
         position: fixed;
@@ -126,17 +117,22 @@
         z-index: 100;
         display: flex;
         align-items: center;
-        justify-content: space-between;
         padding: 1.4rem 3rem;
         border-bottom: 1px solid var(--border);
         background: rgba(10, 10, 8, 0.88);
         backdrop-filter: blur(20px);
+        flex-wrap: wrap;
+        gap: 0;
       }
       .nav-logo {
         font-family: "Figtree", sans-serif;
+        font-weight: 800;
+        font-size: 1.1rem;
         letter-spacing: -0.02em;
         color: var(--text);
         text-decoration: none;
+        /* Push all other nav items to the right */
+        margin-right: auto;
       }
       .nav-logo span {
         color: var(--accent);
@@ -169,16 +165,14 @@
         background: transparent;
         border-radius: 2px;
         cursor: none;
-        transition:
-          background 0.2s,
-          color 0.2s;
+        transition: background 0.2s, color 0.2s;
       }
       .nav-cta:hover {
         background: var(--accent);
         color: var(--bg);
       }
 
-      /* THEME TOGGLE */
+      /* THEME TOGGLE — single instance, always in the nav DOM outside nav-links */
       .theme-toggle {
         width: 40px;
         height: 22px;
@@ -190,10 +184,10 @@
         padding: 2px;
         cursor: none;
         position: relative;
-        transition:
-          border-color 0.25s,
-          background 0.25s;
+        transition: border-color 0.25s, background 0.25s;
         flex-shrink: 0;
+        /* Spacing from nav-links on desktop */
+        margin-left: 1.5rem;
       }
       .theme-toggle:hover {
         border-color: var(--accent);
@@ -203,9 +197,7 @@
         height: 14px;
         border-radius: 50%;
         background: var(--muted);
-        transition:
-          transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-          background 0.25s;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.25s;
         flex-shrink: 0;
       }
       :root.light .toggle-knob {
@@ -215,6 +207,46 @@
       :root:not(.light) .toggle-knob {
         transform: translateX(0px);
         background: var(--muted);
+      }
+
+      /* HAMBURGER */
+      .hamburger {
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+        width: 40px;
+        height: 40px;
+        background: transparent;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        cursor: none;
+        z-index: 110;
+        transition: border-color 0.2s;
+        flex-shrink: 0;
+      }
+      .hamburger:hover {
+        border-color: var(--accent);
+      }
+      .hamburger span {
+        display: block;
+        width: 18px;
+        height: 1.5px;
+        background: var(--text);
+        border-radius: 2px;
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s, background 0.2s;
+        transform-origin: center;
+      }
+      .hamburger.open span:nth-child(1) {
+        transform: translateY(6.5px) rotate(45deg);
+      }
+      .hamburger.open span:nth-child(2) {
+        opacity: 0;
+        transform: scaleX(0);
+      }
+      .hamburger.open span:nth-child(3) {
+        transform: translateY(-6.5px) rotate(-45deg);
       }
 
       /* HERO */
@@ -227,7 +259,6 @@
         position: relative;
         gap: 4rem;
       }
-
       .hero-grid-line {
         position: absolute;
         top: 0;
@@ -240,7 +271,6 @@
         background-size: 60px 60px;
         pointer-events: none;
       }
-
       .hero-tag {
         font-family: "DM Mono", monospace;
         font-size: 0.72rem;
@@ -259,7 +289,6 @@
         height: 1px;
         background: var(--accent);
       }
-
       .hero-name {
         font-family: "Figtree", sans-serif;
         font-weight: 800;
@@ -276,7 +305,6 @@
       .hero-name .highlight {
         color: var(--accent);
       }
-
       .hero-role {
         font-family: "DM Mono", monospace;
         font-size: 0.85rem;
@@ -287,7 +315,6 @@
       .hero-role .typing {
         color: var(--accent3);
       }
-
       .hero-bio {
         font-size: 1rem;
         line-height: 1.75;
@@ -296,7 +323,6 @@
         margin-bottom: 2.5rem;
         opacity: 0;
       }
-
       .hero-actions {
         display: flex;
         gap: 1rem;
@@ -315,9 +341,7 @@
         border-radius: 2px;
         cursor: none;
         font-weight: 500;
-        transition:
-          transform 0.2s,
-          box-shadow 0.2s;
+        transition: transform 0.2s, box-shadow 0.2s;
       }
       .btn-primary:hover {
         transform: translateY(-2px);
@@ -334,9 +358,7 @@
         background: transparent;
         border-radius: 2px;
         cursor: none;
-        transition:
-          border-color 0.2s,
-          color 0.2s;
+        transition: border-color 0.2s, color 0.2s;
         text-decoration: none;
         display: inline-flex;
         align-items: center;
@@ -361,9 +383,7 @@
         display: flex;
         align-items: center;
         gap: 1.2rem;
-        transition:
-          border-color 0.3s,
-          transform 0.3s;
+        transition: border-color 0.3s, transform 0.3s;
       }
       .stat-card:hover {
         border-color: rgba(200, 240, 74, 0.3);
@@ -388,7 +408,6 @@
         margin-bottom: 0.2rem;
         font-size: 0.95rem;
       }
-
       .availability-badge {
         display: inline-flex;
         align-items: center;
@@ -412,18 +431,11 @@
         animation: pulse 2s infinite;
       }
       @keyframes pulse {
-        0%,
-        100% {
-          opacity: 1;
-          transform: scale(1);
-        }
-        50% {
-          opacity: 0.4;
-          transform: scale(0.8);
-        }
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.4; transform: scale(0.8); }
       }
 
-      /* SECTION COMMONS */
+      /* SECTIONS */
       section {
         padding: 6rem 3rem;
         position: relative;
@@ -486,15 +498,9 @@
         opacity: 0;
         transition: opacity 0.3s ease;
       }
-      .exp-item:hover::before {
-        opacity: 1;
-      }
-      .exp-item:hover {
-        background: var(--surface2);
-      }
-      .exp-meta {
-        padding-right: 2rem;
-      }
+      .exp-item:hover::before { opacity: 1; }
+      .exp-item:hover { background: var(--surface2); }
+      .exp-meta { padding-right: 2rem; }
       .exp-date {
         font-family: "DM Mono", monospace;
         font-size: 0.7rem;
@@ -555,9 +561,7 @@
       }
 
       /* PROJECTS */
-      #projects {
-        background: var(--bg);
-      }
+      #projects { background: var(--bg); }
       .projects-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -578,20 +582,12 @@
         content: "";
         position: absolute;
         inset: 0;
-        background: linear-gradient(
-          135deg,
-          rgba(200, 240, 74, 0.04) 0%,
-          transparent 60%
-        );
+        background: linear-gradient(135deg, rgba(200, 240, 74, 0.04) 0%, transparent 60%);
         opacity: 0;
         transition: opacity 0.3s;
       }
-      .project-card:hover::after {
-        opacity: 1;
-      }
-      .project-card:hover {
-        background: var(--surface2);
-      }
+      .project-card:hover::after { opacity: 1; }
+      .project-card:hover { background: var(--surface2); }
       .project-num {
         font-family: "DM Mono", monospace;
         font-size: 0.65rem;
@@ -637,12 +633,10 @@
         align-items: center;
         gap: 0.3rem;
         transition: gap 0.2s;
-        z-index: 99999999999;
         position: relative;
+        z-index: 10;
       }
-      .project-link:hover {
-        gap: 0.6rem;
-      }
+      .project-link:hover { gap: 0.6rem; }
 
       /* SKILLS */
       #skills {
@@ -675,10 +669,7 @@
         border-radius: 4px;
         color: var(--text);
         background: var(--bg);
-        transition:
-          border-color 0.2s,
-          color 0.2s,
-          background 0.2s;
+        transition: border-color 0.2s, color 0.2s, background 0.2s;
         cursor: default;
       }
       .skill-item:hover {
@@ -709,9 +700,7 @@
         line-height: 1;
         margin-bottom: 1.5rem;
       }
-      .contact-big .accent {
-        color: var(--accent);
-      }
+      .contact-big .accent { color: var(--accent); }
       .contact-sub {
         font-size: 0.95rem;
         color: var(--muted);
@@ -737,9 +726,7 @@
         padding: 0.85rem 1.5rem;
         border: 1px solid var(--border);
         border-radius: 4px;
-        transition:
-          border-color 0.2s,
-          color 0.2s;
+        transition: border-color 0.2s, color 0.2s;
       }
       .contact-link:hover {
         border-color: var(--accent);
@@ -791,11 +778,8 @@
         transform: translateY(30px);
         transition: transform 0.35s;
       }
-      .modal-overlay.open .modal {
-        transform: translateY(0);
-      }
+      .modal-overlay.open .modal { transform: translateY(0); }
       .modal-close {
-        /* position: sticky; */
         top: 0;
         display: flex;
         justify-content: flex-end;
@@ -812,9 +796,7 @@
         padding: 0.5rem 1rem;
         border-radius: 4px;
         cursor: none;
-        transition:
-          color 0.2s,
-          border-color 0.2s;
+        transition: color 0.2s, border-color 0.2s;
       }
       .modal-close button:hover {
         color: var(--text);
@@ -832,10 +814,7 @@
         color: var(--muted);
         margin-bottom: 2.5rem;
       }
-
-      .modal-section {
-        margin-bottom: 2.5rem;
-      }
+      .modal-section { margin-bottom: 2.5rem; }
       .modal-section-title {
         font-family: "DM Mono", monospace;
         font-size: 0.7rem;
@@ -846,9 +825,7 @@
         padding-bottom: 0.5rem;
         border-bottom: 1px solid var(--border);
       }
-      .edu-item {
-        margin-bottom: 1.2rem;
-      }
+      .edu-item { margin-bottom: 1.2rem; }
       .edu-degree {
         font-family: "Figtree", sans-serif;
         font-size: 1rem;
@@ -865,7 +842,6 @@
         font-size: 0.75rem;
         color: var(--accent);
       }
-
       .cert-item {
         display: flex;
         align-items: flex-start;
@@ -877,9 +853,7 @@
         margin-bottom: 0.8rem;
         transition: border-color 0.2s;
       }
-      .cert-item:hover {
-        border-color: rgba(200, 240, 74, 0.25);
-      }
+      .cert-item:hover { border-color: rgba(200, 240, 74, 0.25); }
       .cert-icon {
         width: 36px;
         height: 36px;
@@ -902,14 +876,11 @@
         font-size: 0.7rem;
         color: var(--muted);
       }
-
       .training-item {
         padding: 1rem 0;
         border-bottom: 1px solid var(--border);
       }
-      .training-item:last-child {
-        border-bottom: none;
-      }
+      .training-item:last-child { border-bottom: none; }
       .training-name {
         font-size: 0.9rem;
         font-weight: 600;
@@ -920,7 +891,6 @@
         color: var(--muted);
         line-height: 1.6;
       }
-
       .personal-grid {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
@@ -947,17 +917,10 @@
         color: var(--text);
       }
 
-      /* Scroll bar */
-      ::-webkit-scrollbar {
-        width: 4px;
-      }
-      ::-webkit-scrollbar-track {
-        background: var(--bg);
-      }
-      ::-webkit-scrollbar-thumb {
-        background: var(--border);
-        border-radius: 2px;
-      }
+      /* Scrollbar */
+      ::-webkit-scrollbar { width: 4px; }
+      ::-webkit-scrollbar-track { background: var(--bg); }
+      ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
       /* Marquee */
       .marquee-wrap {
@@ -989,101 +952,112 @@
         font-size: 0.5rem;
       }
       @keyframes marquee {
-        0% {
-          transform: translateX(0);
-        }
-        100% {
-          transform: translateX(-50%);
-        }
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
       }
 
+      /* =============================================
+         RESPONSIVE — mobile ≤ 900px
+         Key change: .theme-toggle lives outside
+         .nav-links so it's always visible on mobile.
+         order: 2 → sits between logo and hamburger.
+         hamburger → order: 3.
+         nav-links (collapsible) → order: 4.
+      ============================================= */
       @media (max-width: 900px) {
+        nav {
+          padding: 1rem 1.5rem;
+          align-items: center;
+        }
+        /* nav-logo has margin-right:auto already, pushing rest right */
+
+        /* Toggle always visible: sits between logo and hamburger */
+        .theme-toggle {
+          order: 2;
+          margin-left: auto; /* fills space between logo and toggle */
+          margin-right: 0.75rem;
+        }
+
+        /* Hamburger comes after the toggle */
+        .hamburger {
+          display: flex;
+          order: 3;
+        }
+
+        /* Full-width dropdown row */
+        .nav-links {
+          display: none;
+          flex-direction: column;
+          align-items: stretch;
+          gap: 0;
+          width: 100%;
+          padding: 0.5rem 0 1rem;
+          border-top: 1px solid var(--border);
+          margin-top: 0.8rem;
+          order: 4;
+        }
+        .nav-links.open { display: flex; }
+        .nav-links a {
+          padding: 0.85rem 0;
+          border-bottom: 1px solid var(--border);
+          font-size: 0.8rem;
+          width: 100%;
+        }
+        .nav-cta {
+          width: 100%;
+          text-align: center;
+          justify-content: center;
+          padding: 0.75rem;
+          margin-top: 0.5rem;
+          display: block;
+        }
+
         #hero {
           grid-template-columns: 1fr;
+          padding: 7rem 1.5rem 4rem;
         }
-        .hero-right {
-          display: none;
-        }
-        .projects-grid {
-          grid-template-columns: 1fr;
-        }
-        .skills-container {
-          grid-template-columns: 1fr;
-        }
-        .exp-item {
-          grid-template-columns: 1fr;
-        }
-        .personal-grid {
-          grid-template-columns: 1fr;
-        }
-        nav {
-          padding: 1.2rem 1.5rem;
-        }
-        section {
-          padding: 5rem 1.5rem;
+        .hero-right { display: none; }
+        .projects-grid { grid-template-columns: 1fr; }
+        .skills-container { grid-template-columns: 1fr; }
+        .exp-item { grid-template-columns: 1fr; }
+        .personal-grid { grid-template-columns: 1fr 1fr; }
+        section { padding: 5rem 1.5rem; }
+        footer {
+          padding: 1.5rem;
+          flex-direction: column;
+          gap: 0.5rem;
+          text-align: center;
         }
       }
 
       /* LIGHT MODE OVERRIDES */
-      :root.light body {
-        background: var(--bg);
-      }
-      :root.light nav {
-        background: rgba(245, 244, 240, 0.92);
-      }
-      :root.light .cursor-ring {
-        border-color: rgba(106, 168, 0, 0.5);
-      }
+      :root.light body { background: var(--bg); }
+      :root.light nav { background: rgba(245, 244, 240, 0.92); }
+      :root.light .cursor-ring { border-color: rgba(106, 168, 0, 0.5); }
       :root.light .hero-grid-line {
         background-image:
           linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px),
           linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
       }
-      :root.light .exp-desc {
-        color: rgba(26, 26, 22, 0.6);
-      }
-      :root.light .exp-bullet {
-        color: rgba(26, 26, 22, 0.55);
-      }
-      :root.light .project-desc {
-        color: rgba(26, 26, 22, 0.55);
-      }
-      :root.light .hero-bio {
-        color: rgba(26, 26, 22, 0.65);
-      }
+      :root.light .exp-desc { color: rgba(26, 26, 22, 0.6); }
+      :root.light .exp-bullet { color: rgba(26, 26, 22, 0.55); }
+      :root.light .project-desc { color: rgba(26, 26, 22, 0.55); }
+      :root.light .hero-bio { color: rgba(26, 26, 22, 0.65); }
       :root.light .availability-badge {
         background: rgba(0, 138, 110, 0.08);
         border-color: rgba(0, 138, 110, 0.25);
       }
-      :root.light .dot-pulse {
-        background: var(--accent3);
-      }
-      :root.light .marquee-wrap {
-        background: var(--surface);
-      }
-      :root.light .contact-big .accent {
-        color: var(--accent);
-      }
-      :root.light .skill-item {
-        background: var(--bg);
-      }
+      :root.light .dot-pulse { background: var(--accent3); }
+      :root.light .skill-item { background: var(--bg); }
       :root.light .skill-item.highlight-skill {
         border-color: rgba(106, 168, 0, 0.4);
         background: rgba(106, 168, 0, 0.07);
       }
       :root.light .project-card::after {
-        background: linear-gradient(
-          135deg,
-          rgba(106, 168, 0, 0.06) 0%,
-          transparent 60%
-        );
+        background: linear-gradient(135deg, rgba(106, 168, 0, 0.06) 0%, transparent 60%);
       }
-      :root.light .modal-overlay {
-        background: rgba(200, 200, 195, 0.7);
-      }
-      :root.light .cert-icon {
-        background: rgba(106, 168, 0, 0.12);
-      }
+      :root.light .modal-overlay { background: rgba(200, 200, 195, 0.7); }
+      :root.light .cert-icon { background: rgba(106, 168, 0, 0.12); }
     </style>
   </head>
   <body>
@@ -1092,22 +1066,47 @@
 
     <!-- NAV -->
     <nav id="navbar">
+      <!-- Logo: margin-right:auto pushes siblings to the right -->
       <a href="#" class="nav-logo">GS<span>.</span></a>
-      <div class="nav-links">
-        <a href="#experience">Work</a>
-        <a href="#projects">Projects</a>
-        <a href="#skills">Skills</a>
-        <a href="#contact">Contact</a>
+
+      <!-- Nav links (desktop: always visible | mobile: collapsible) -->
+      <div class="nav-links" id="navLinks">
+        <a href="#experience" onclick="closeMenu()">Work</a>
+        <a href="#projects" onclick="closeMenu()">Projects</a>
+        <a href="#skills" onclick="closeMenu()">Skills</a>
+        <a href="#contact" onclick="closeMenu()">Contact</a>
         <button
-          class="theme-toggle"
-          id="themeToggle"
-          onclick="toggleTheme()"
-          title="Toggle theme"
+          class="nav-cta"
+          onclick="openModal(); closeMenu();"
         >
-          <span class="toggle-knob"></span>
+          Full Profile
         </button>
-        <button class="nav-cta" onclick="openModal()">Full Profile</button>
       </div>
+
+      <!--
+        Theme toggle — placed OUTSIDE nav-links so it stays visible
+        on mobile even when the hamburger menu is closed.
+        Desktop: appears naturally after nav-links (margin-left:1.5rem).
+        Mobile:  order:2 → sits between logo and hamburger (order:3).
+      -->
+      <button
+        class="theme-toggle"
+        id="themeToggle"
+        onclick="toggleTheme()"
+        title="Toggle theme"
+      >
+        <span class="toggle-knob"></span>
+      </button>
+
+      <!-- Hamburger (mobile only, order:3) -->
+      <button
+        class="hamburger"
+        id="hamburger"
+        onclick="toggleMenu()"
+        aria-label="Toggle menu"
+      >
+        <span></span><span></span><span></span>
+      </button>
     </nav>
 
     <!-- HERO -->
@@ -1116,12 +1115,10 @@
       <div class="hero-left">
         <div class="hero-tag">Available for freelance</div>
         <h1 class="hero-name">
-          <span class="line">Ghevaram</span>
+          <span class="line">Mr. Ghevaram</span>
           <span class="line">Suthar<span class="highlight">.</span></span>
         </h1>
-        <p class="hero-role">
-          <span class="typing" id="typed-role"></span>
-        </p>
+        <p class="hero-role"><span class="typing" id="typed-role"></span></p>
         <p class="hero-bio">
           Frontend-focused developer with 2+ years building responsive,
           performant web applications. Specializing in React ecosystems and
@@ -1131,37 +1128,27 @@
           <button class="btn-primary" onclick="openModal()">
             View Full Profile
           </button>
-          <a href="mailto:ghevaramsuthar21@gmail.com" class="btn-ghost"
-            >Email Me ↗</a
-          >
+          <a href="mailto:ghevaramsuthar21@gmail.com" class="btn-ghost">Email Me ↗</a>
         </div>
       </div>
       <div class="hero-right">
         <div class="availability-badge">
-          <span class="dot-pulse"></span>
-          Open to opportunities
+          <span class="dot-pulse"></span>Open to opportunities
         </div>
         <div class="stat-card">
-          <div class="stat-num">
-            40<span style="font-size: 1.5rem; color: var(--muted)">+</span>
-          </div>
+          <div class="stat-num">40<span style="font-size:1.5rem;color:var(--muted)">+</span></div>
           <div class="stat-label">
-            <strong>Websites Delivered</strong>Responsive, production-grade
-            builds
+            <strong>Websites Delivered</strong>Responsive, production-grade builds
           </div>
         </div>
         <div class="stat-card">
-          <div class="stat-num">
-            7<span style="font-size: 1.5rem; color: var(--muted)">+</span>
-          </div>
+          <div class="stat-num">7<span style="font-size:1.5rem;color:var(--muted)">+</span></div>
           <div class="stat-label">
             <strong>Freelance Clients</strong>Real estate, e-commerce, marketing
           </div>
         </div>
         <div class="stat-card">
-          <div class="stat-num">
-            2<span style="font-size: 1.5rem; color: var(--muted)">yr</span>
-          </div>
+          <div class="stat-num">2<span style="font-size:1.5rem;color:var(--muted)">yr</span></div>
           <div class="stat-label">
             <strong>Industry Experience</strong>Junior to Senior in 18 months
           </div>
@@ -1174,34 +1161,22 @@
       <div class="marquee-inner">
         <span class="marquee-item">React.js <span class="dot">●</span></span>
         <span class="marquee-item">Next.js <span class="dot">●</span></span>
-        <span class="marquee-item"
-          >Tailwind CSS <span class="dot">●</span></span
-        >
+        <span class="marquee-item">Tailwind CSS <span class="dot">●</span></span>
         <span class="marquee-item">GSAP <span class="dot">●</span></span>
         <span class="marquee-item">WordPress <span class="dot">●</span></span>
         <span class="marquee-item">JavaScript <span class="dot">●</span></span>
         <span class="marquee-item">ASP.NET MVC <span class="dot">●</span></span>
-        <span class="marquee-item"
-          >SEO Optimization <span class="dot">●</span></span
-        >
-        <span class="marquee-item"
-          >GSAP Animations <span class="dot">●</span></span
-        >
+        <span class="marquee-item">SEO Optimization <span class="dot">●</span></span>
+        <span class="marquee-item">GSAP Animations <span class="dot">●</span></span>
         <span class="marquee-item">React.js <span class="dot">●</span></span>
         <span class="marquee-item">Next.js <span class="dot">●</span></span>
-        <span class="marquee-item"
-          >Tailwind CSS <span class="dot">●</span></span
-        >
+        <span class="marquee-item">Tailwind CSS <span class="dot">●</span></span>
         <span class="marquee-item">GSAP <span class="dot">●</span></span>
         <span class="marquee-item">WordPress <span class="dot">●</span></span>
         <span class="marquee-item">JavaScript <span class="dot">●</span></span>
         <span class="marquee-item">ASP.NET MVC <span class="dot">●</span></span>
-        <span class="marquee-item"
-          >SEO Optimization <span class="dot">●</span></span
-        >
-        <span class="marquee-item"
-          >GSAP Animations <span class="dot">●</span></span
-        >
+        <span class="marquee-item">SEO Optimization <span class="dot">●</span></span>
+        <span class="marquee-item">GSAP Animations <span class="dot">●</span></span>
       </div>
     </div>
 
@@ -1223,18 +1198,9 @@
               high-performance websites with advanced UI animations.
             </div>
             <div class="exp-bullets">
-              <div class="exp-bullet">
-                Created and maintained 40+ responsive, user-friendly websites
-                enhancing user engagement significantly.
-              </div>
-              <div class="exp-bullet">
-                Optimized performance using PageSpeed Insights and Uber Suggest
-                for advanced front-end optimization.
-              </div>
-              <div class="exp-bullet">
-                Engineered landing pages with GSAP for immersive scroll-driven
-                experiences.
-              </div>
+              <div class="exp-bullet">Created and maintained 40+ responsive, user-friendly websites enhancing user engagement significantly.</div>
+              <div class="exp-bullet">Optimized performance using PageSpeed Insights and Uber Suggest for advanced front-end optimization.</div>
+              <div class="exp-bullet">Engineered landing pages with GSAP for immersive scroll-driven experiences.</div>
             </div>
           </div>
         </div>
@@ -1247,22 +1213,12 @@
           <div class="exp-content">
             <div class="exp-role">Freelance Web Developer</div>
             <div class="exp-desc">
-              End-to-end project delivery for clients across real estate,
-              digital marketing, and e-commerce verticals.
+              End-to-end project delivery for clients across real estate, digital marketing, and e-commerce verticals.
             </div>
             <div class="exp-bullets">
-              <div class="exp-bullet">
-                7+ clients served using React.js, Next.js, Tailwind CSS, and
-                WordPress.
-              </div>
-              <div class="exp-bullet">
-                Managed full project lifecycle: requirements → design → dev →
-                deployment.
-              </div>
-              <div class="exp-bullet">
-                Built long-term client relationships through clear communication
-                and on-time delivery.
-              </div>
+              <div class="exp-bullet">7+ clients served using React.js, Next.js, Tailwind CSS, and WordPress.</div>
+              <div class="exp-bullet">Managed full project lifecycle: requirements → design → dev → deployment.</div>
+              <div class="exp-bullet">Built long-term client relationships through clear communication and on-time delivery.</div>
             </div>
           </div>
         </div>
@@ -1275,22 +1231,12 @@
           <div class="exp-content">
             <div class="exp-role">Junior Software Engineer</div>
             <div class="exp-desc">
-              Focused on designing intuitive front-end interfaces while actively
-              contributing to back-end development.
+              Focused on designing intuitive front-end interfaces while actively contributing to back-end development.
             </div>
             <div class="exp-bullets">
-              <div class="exp-bullet">
-                Improved application functionality and user flow through
-                interface redesigns.
-              </div>
-              <div class="exp-bullet">
-                Contributed to redesign of the company's core website improving
-                accessibility.
-              </div>
-              <div class="exp-bullet">
-                Collaborated closely with backend teams bridging front-end and
-                API integrations.
-              </div>
+              <div class="exp-bullet">Improved application functionality and user flow through interface redesigns.</div>
+              <div class="exp-bullet">Contributed to redesign of the company's core website improving accessibility.</div>
+              <div class="exp-bullet">Collaborated closely with backend teams bridging front-end and API integrations.</div>
             </div>
           </div>
         </div>
@@ -1305,117 +1251,63 @@
         <div class="project-card reveal-item">
           <div class="project-num">01</div>
           <div class="project-name">GM Modular</div>
-          <div class="project-desc">
-            Developed front-end components ensuring cross-browser compatibility
-            and a seamless UX using ASP.NET MVC.
-          </div>
+          <div class="project-desc">Developed front-end components ensuring cross-browser compatibility and a seamless UX using ASP.NET MVC.</div>
           <div class="project-stack">
             <span class="stack-pill">ASP.NET MVC</span>
             <span class="stack-pill">HTML/CSS</span>
             <span class="stack-pill">JavaScript</span>
           </div>
-          <a
-            href="https://www.gmmodular.com/"
-            target="_blank"
-            class="project-link"
-            >Live Site →</a
-          >
+          <a href="https://www.gmmodular.com/" target="_blank" class="project-link">Live Site →</a>
         </div>
         <div class="project-card reveal-item">
           <div class="project-num">02</div>
           <div class="project-name">Smartnet Software</div>
-          <div class="project-desc">
-            Redesigned the company's core website, improving accessibility and
-            overall user experience from scratch.
-          </div>
+          <div class="project-desc">Redesigned the company's core website, improving accessibility and overall user experience from scratch.</div>
           <div class="project-stack">
             <span class="stack-pill">HTML</span>
             <span class="stack-pill">CSS</span>
             <span class="stack-pill">JavaScript</span>
           </div>
-          <a
-            href="https://smartnetsoftware.com/"
-            target="_blank"
-            class="project-link"
-            >Live Site →</a
-          >
+          <a href="https://smartnetsoftware.com/" target="_blank" class="project-link">Live Site →</a>
         </div>
         <div class="project-card reveal-item">
           <div class="project-num">03</div>
           <div class="project-name">Ink Media</div>
-          <div class="project-desc">
-            Designed and engineered a landing page using GSAP animations for a
-            bold, interactive brand experience.
-          </div>
+          <div class="project-desc">Designed and engineered a landing page using GSAP animations for a bold, interactive brand experience.</div>
           <div class="project-stack">
             <span class="stack-pill">GSAP</span>
             <span class="stack-pill">JavaScript</span>
             <span class="stack-pill">CSS</span>
           </div>
-          <a href="https://inkmedia.in/" target="_blank" class="project-link"
-            >Live Site →</a
-          >
+          <a href="https://inkmedia.in/" target="_blank" class="project-link">Live Site →</a>
         </div>
         <div class="project-card reveal-item">
           <div class="project-num">04</div>
           <div class="project-name">Groups Godown</div>
-          <div class="project-desc">
-            Built the front-end in ReactJS with Tailwind CSS for a modern,
-            scalable web application interface.
-          </div>
+          <div class="project-desc">Built the front-end in ReactJS with Tailwind CSS for a modern, scalable web application interface.</div>
           <div class="project-stack">
             <span class="stack-pill">ReactJS</span>
             <span class="stack-pill">Tailwind CSS</span>
           </div>
-          <a
-            href="https://www.groupgodown.com/"
-            target="_blank"
-            class="project-link"
-            >Live Site →</a
-          >
+          <a href="https://www.groupgodown.com/" target="_blank" class="project-link">Live Site →</a>
         </div>
         <div class="project-card reveal-item">
           <div class="project-num">05</div>
           <div class="project-name">Meta Motives</div>
-          <div class="project-desc">
-            Led end-to-end development enhancing SEO performance and boosting
-            organic traffic for a digital agency.
-          </div>
+          <div class="project-desc">Led end-to-end development enhancing SEO performance and boosting organic traffic for a digital agency.</div>
           <div class="project-stack">
             <span class="stack-pill">Next.js</span>
             <span class="stack-pill">SEO</span>
             <span class="stack-pill">Tailwind CSS</span>
           </div>
-          <a
-            href="https://metamotives.com/"
-            target="_blank"
-            class="project-link"
-            >Live Site →</a
-          >
+          <a href="https://metamotives.com/" target="_blank" class="project-link">Live Site →</a>
         </div>
-        <div
-          class="project-card reveal-item"
-          style="
-            background: rgba(200, 240, 74, 0.04);
-            border-left: 2px solid var(--accent);
-          "
-        >
-          <div class="project-num" style="color: var(--accent)">+More</div>
-          <div class="project-name" style="color: var(--accent)">
-            And counting...
-          </div>
-          <div class="project-desc">
-            40+ websites built across industries. Freelance projects spanning
-            real estate, e-commerce, and digital marketing.
-          </div>
-          <div style="margin-top: auto; z-index: 99999999; position: relative">
-            <button
-              class="btn-ghost"
-              style="font-size: 0.65rem; padding: 0.6rem 1rem"
-              onclick="openModal()"
-            >
-              View Full Profile
-            </button>
+        <div class="project-card reveal-item" style="background:rgba(200,240,74,0.04);border-left:2px solid var(--accent)">
+          <div class="project-num" style="color:var(--accent)">+More</div>
+          <div class="project-name" style="color:var(--accent)">And counting...</div>
+          <div class="project-desc">40+ websites built across industries. Freelance projects spanning real estate, e-commerce, and digital marketing.</div>
+          <div style="margin-top:auto;position:relative;z-index:10">
+            <button class="btn-ghost" style="font-size:0.65rem;padding:0.6rem 1rem" onclick="openModal()">View Full Profile</button>
           </div>
         </div>
       </div>
@@ -1434,7 +1326,7 @@
             <span class="skill-item highlight-skill">JavaScript</span>
           </div>
           <br />
-          <div class="skill-group-title">Frameworks & Libraries</div>
+          <div class="skill-group-title">Frameworks &amp; Libraries</div>
           <div class="skill-items">
             <span class="skill-item highlight-skill">ReactJS</span>
             <span class="skill-item highlight-skill">NextJS</span>
@@ -1445,7 +1337,7 @@
           </div>
         </div>
         <div>
-          <div class="skill-group-title">Tools & Platforms</div>
+          <div class="skill-group-title">Tools &amp; Platforms</div>
           <div class="skill-items">
             <span class="skill-item">WordPress</span>
             <span class="skill-item">ASP.NET MVC</span>
@@ -1469,29 +1361,12 @@
     <!-- CONTACT -->
     <section id="contact">
       <div class="contact-inner">
-        <h2 class="contact-big">
-          Let's build something <span class="accent">great.</span>
-        </h2>
-        <p class="contact-sub">
-          Open to freelance projects, full-time roles, and interesting collabs.
-          Based in Pune — working globally.
-        </p>
+        <h2 class="contact-big">Let's build something <span class="accent">great.</span></h2>
+        <p class="contact-sub">Open to freelance projects, full-time roles, and interesting collabs. Based in Pune — working globally.</p>
         <div class="contact-links">
-          <a href="mailto:ghevaramsuthar21@gmail.com" class="contact-link"
-            >✉ Email</a
-          >
-          <a
-            href="https://www.linkedin.com/in/ghevaram-suthar-63209321b"
-            target="_blank"
-            class="contact-link"
-            >in LinkedIn</a
-          >
-          <a
-            href="https://github.com/ghevaram"
-            target="_blank"
-            class="contact-link"
-            >⌥ GitHub</a
-          >
+          <a href="mailto:ghevaramsuthar21@gmail.com" class="contact-link">✉ Email</a>
+          <a href="https://www.linkedin.com/in/ghevaram-suthar-63209321b" target="_blank" class="contact-link">in LinkedIn</a>
+          <a href="https://github.com/ghevaram" target="_blank" class="contact-link">⌥ GitHub</a>
         </div>
       </div>
     </section>
@@ -1508,88 +1383,53 @@
           <button onclick="closeModal()">✕ Close</button>
         </div>
         <div class="modal-title">Ghevaram Suthar</div>
-        <div class="modal-sub">
-          Full profile — Education, Certifications, Training & Personal Details
-        </div>
-
+        <div class="modal-sub">Full profile — Education, Certifications, Training &amp; Personal Details</div>
         <div class="modal-section">
           <div class="modal-section-title">Education</div>
           <div class="edu-item">
-            <div class="edu-degree">
-              Bachelor of Engineering — Mechanical Engineering
-            </div>
-            <div class="edu-school">
-              RMD Sinhgad School of Engineering, Savitribai Phule Pune
-              University · 2022
-            </div>
+            <div class="edu-degree">Bachelor of Engineering — Mechanical Engineering</div>
+            <div class="edu-school">RMD Sinhgad School of Engineering, Savitribai Phule Pune University · 2022</div>
             <div class="edu-grade">CGPA: 7.98 / 10.00</div>
           </div>
           <div class="edu-item">
             <div class="edu-degree">12th HSC</div>
-            <div class="edu-school">
-              Sinhgad Institutes, Maharashtra State Board · HSC
-            </div>
+            <div class="edu-school">Sinhgad Institutes, Maharashtra State Board · HSC</div>
             <div class="edu-grade">Percentage: 61.08%</div>
           </div>
           <div class="edu-item">
             <div class="edu-degree">10th SSC</div>
-            <div class="edu-school">
-              Mickey's High School, Maharashtra State Board · SSC
-            </div>
+            <div class="edu-school">Mickey's High School, Maharashtra State Board · SSC</div>
             <div class="edu-grade">Percentage: 61.60%</div>
           </div>
         </div>
-
         <div class="modal-section">
           <div class="modal-section-title">Certifications</div>
           <div class="cert-item">
             <div class="cert-icon">🐍</div>
             <div>
               <div class="cert-name">Basics of Python</div>
-              <div class="cert-org">
-                Infosys Springboard — Data types, variables, operations in
-                Python
-              </div>
+              <div class="cert-org">Infosys Springboard — Data types, variables, operations in Python</div>
             </div>
           </div>
           <div class="cert-item">
             <div class="cert-icon">🏆</div>
             <div>
-              <div class="cert-name">
-                Certificate of Outstanding Performance
-              </div>
-              <div class="cert-org">
-                InternsElite — Recognized for excellence in minor and major
-                internship projects
-              </div>
+              <div class="cert-name">Certificate of Outstanding Performance</div>
+              <div class="cert-org">InternsElite — Recognized for excellence in minor and major internship projects</div>
             </div>
           </div>
         </div>
-
         <div class="modal-section">
-          <div class="modal-section-title">Training & Workshops</div>
+          <div class="modal-section-title">Training &amp; Workshops</div>
           <div class="training-item">
-            <div class="training-name">
-              TCS iON Career Edge — Young Professional
-            </div>
-            <div class="training-desc">
-              Communication & Presentation Skills, Soft Skills, Career Guidance,
-              Resume Writing, Group Discussion & Interview Skills, Business
-              Etiquette, Effective Email Writing, Accounting Basics, IT
-              Fundamentals, and AI Overview.
-            </div>
+            <div class="training-name">TCS iON Career Edge — Young Professional</div>
+            <div class="training-desc">Communication &amp; Presentation Skills, Soft Skills, Career Guidance, Resume Writing, Group Discussion &amp; Interview Skills, Business Etiquette, Effective Email Writing, Accounting Basics, IT Fundamentals, and AI Overview.</div>
           </div>
           <div class="training-item">
-            <div class="training-name">
-              Generic Online Training in Cyber Security
-            </div>
-            <div class="training-desc">
-              Cyber Hygiene Practices — Ministry of Electronics & IT (MeitY),
-              Government of India.
-            </div>
+            <div class="training-name">Generic Online Training in Cyber Security</div>
+            <div class="training-desc">Cyber Hygiene Practices — Ministry of Electronics &amp; IT (MeitY), Government of India.</div>
           </div>
         </div>
-
         <div class="modal-section">
           <div class="modal-section-title">Personal Details</div>
           <div class="personal-grid">
@@ -1615,9 +1455,7 @@
             </div>
             <div class="personal-item">
               <div class="personal-label">Status</div>
-              <div class="personal-val" style="color: var(--accent3)">
-                Open to Work
-              </div>
+              <div class="personal-val" style="color:var(--accent3)">Open to Work</div>
             </div>
           </div>
         </div>
@@ -1630,28 +1468,18 @@
       // Cursor
       const cursor = document.getElementById("cursor");
       const cursorRing = document.getElementById("cursorRing");
-      let mouseX = 0,
-        mouseY = 0;
       document.addEventListener("mousemove", (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-        gsap.to(cursor, { x: mouseX, y: mouseY, duration: 0.1 });
-        gsap.to(cursorRing, { x: mouseX, y: mouseY, duration: 0.25 });
+        gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 });
+        gsap.to(cursorRing, { x: e.clientX, y: e.clientY, duration: 0.25 });
       });
 
       // Typed role
-      const roles = [
-        "Senior Developer",
-        "Frontend Specialist",
-        "React Developer",
-        "UI Engineer",
-      ];
+      const roles = ["Senior Developer", "Frontend Specialist", "React Developer", "UI Engineer"];
       let roleIdx = 0;
       function typeRole() {
         const el = document.getElementById("typed-role");
-        const role = roles[roleIdx % roles.length];
         gsap.to(el, {
-          text: role,
+          text: roles[roleIdx % roles.length],
           duration: 0.8,
           ease: "none",
           onComplete: () => {
@@ -1660,121 +1488,75 @@
                 text: "",
                 duration: 0.4,
                 ease: "none",
-                onComplete: () => {
-                  roleIdx++;
-                  typeRole();
-                },
+                onComplete: () => { roleIdx++; typeRole(); }
               });
             }, 2000);
-          },
+          }
         });
       }
 
       // Hero entrance
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-      tl.to(".hero-tag", { opacity: 1, y: 0, duration: 0.6, delay: 0.3 })
-        .to(".hero-name", { opacity: 1, y: 0, duration: 0.8 }, "-=0.3")
-        .to(".hero-role", { opacity: 1, duration: 0.5 }, "-=0.3")
-        .to(".hero-bio", { opacity: 1, y: 0, duration: 0.6 }, "-=0.3")
-        .to(".hero-actions", { opacity: 1, y: 0, duration: 0.5 }, "-=0.3")
-        .to(".hero-right", { opacity: 1, x: 0, duration: 0.7 }, "-=0.5")
-        .call(typeRole);
-
       gsap.set(".hero-name", { y: 30 });
       gsap.set(".hero-bio", { y: 20 });
       gsap.set(".hero-actions", { y: 20 });
       gsap.set(".hero-right", { x: 40 });
+      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+      tl.to(".hero-tag",     { opacity: 1, y: 0, duration: 0.6, delay: 0.3 })
+        .to(".hero-name",    { opacity: 1, y: 0, duration: 0.8 }, "-=0.3")
+        .to(".hero-role",    { opacity: 1, duration: 0.5 }, "-=0.3")
+        .to(".hero-bio",     { opacity: 1, y: 0, duration: 0.6 }, "-=0.3")
+        .to(".hero-actions", { opacity: 1, y: 0, duration: 0.5 }, "-=0.3")
+        .to(".hero-right",   { opacity: 1, x: 0, duration: 0.7 }, "-=0.5")
+        .call(typeRole);
 
       // Scroll reveals
       gsap.utils.toArray(".reveal-item").forEach((el, i) => {
         gsap.from(el, {
-          scrollTrigger: {
-            trigger: el,
-            start: "top 85%",
-            toggleActions: "play none none none",
-          },
-          opacity: 0,
-          y: 40,
-          duration: 0.7,
-          delay: i * 0.08,
-          ease: "power2.out",
+          scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none none" },
+          opacity: 0, y: 40, duration: 0.7, delay: i * 0.08, ease: "power2.out"
         });
       });
-
-      // Section titles
       gsap.utils.toArray(".section-title").forEach((el) => {
         gsap.from(el, {
           scrollTrigger: { trigger: el, start: "top 88%" },
-          opacity: 0,
-          y: 30,
-          duration: 0.7,
-          ease: "power2.out",
+          opacity: 0, y: 30, duration: 0.7, ease: "power2.out"
         });
       });
-
-      // Skill items stagger
       gsap.from(".skill-item", {
         scrollTrigger: { trigger: "#skills", start: "top 75%" },
-        opacity: 0,
-        scale: 0.9,
-        duration: 0.4,
-        stagger: 0.04,
-        ease: "back.out(1.5)",
+        opacity: 0, scale: 0.9, duration: 0.4, stagger: 0.04, ease: "back.out(1.5)"
       });
-
-      // Stat cards
       gsap.utils.toArray(".stat-card").forEach((card, i) => {
         gsap.from(card, {
           scrollTrigger: { trigger: card, start: "top 90%" },
-          opacity: 0,
-          x: 30,
-          duration: 0.5,
-          delay: i * 0.1,
-          ease: "power2.out",
+          opacity: 0, x: 30, duration: 0.5, delay: i * 0.1, ease: "power2.out"
         });
       });
-
-      // Contact section
       gsap.from(".contact-big", {
         scrollTrigger: { trigger: "#contact", start: "top 75%" },
-        opacity: 0,
-        y: 50,
-        duration: 0.9,
-        ease: "power3.out",
+        opacity: 0, y: 50, duration: 0.9, ease: "power3.out"
       });
       gsap.from(".contact-link", {
         scrollTrigger: { trigger: "#contact", start: "top 70%" },
-        opacity: 0,
-        y: 20,
-        stagger: 0.1,
-        duration: 0.5,
-        ease: "power2.out",
+        opacity: 0, y: 20, stagger: 0.1, duration: 0.5, ease: "power2.out"
       });
 
-      // Navbar scroll effect
+      // Navbar scroll
       ScrollTrigger.create({
         start: "top -60",
         onUpdate: (self) => {
           gsap.to("#navbar", {
-            borderBottomColor:
-              self.progress > 0 ? "rgba(255,255,255,0.1)" : "transparent",
-            duration: 0.3,
+            borderBottomColor: self.progress > 0 ? "rgba(255,255,255,0.1)" : "transparent",
+            duration: 0.3
           });
-        },
+        }
       });
 
       // Modal
       function openModal() {
         document.getElementById("modal").classList.add("open");
         document.body.style.overflow = "hidden";
-        gsap.from(".modal-section", {
-          opacity: 0,
-          y: 20,
-          stagger: 0.1,
-          duration: 0.5,
-          ease: "power2.out",
-          delay: 0.2,
-        });
+        gsap.from(".modal-section", { opacity: 0, y: 20, stagger: 0.1, duration: 0.5, ease: "power2.out", delay: 0.2 });
       }
       function closeModal() {
         document.getElementById("modal").classList.remove("open");
@@ -1783,44 +1565,44 @@
       function handleOverlayClick(e) {
         if (e.target === document.getElementById("modal")) closeModal();
       }
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") closeModal();
-      });
+      document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
 
       // Theme toggle
       function toggleTheme() {
         document.documentElement.classList.toggle("light");
-        const isLight = document.documentElement.classList.contains("light");
-        localStorage.setItem("theme", isLight ? "light" : "dark");
+        localStorage.setItem("theme", document.documentElement.classList.contains("light") ? "light" : "dark");
       }
-
-      // Restore saved theme
       (function () {
-        const saved = localStorage.getItem("theme");
-        if (saved === "light") document.documentElement.classList.add("light");
+        if (localStorage.getItem("theme") === "light") document.documentElement.classList.add("light");
       })();
 
-      // Hover tilt on project cards
+      // Hamburger
+      function toggleMenu() {
+        const ham = document.getElementById("hamburger");
+        const links = document.getElementById("navLinks");
+        const isOpen = ham.classList.toggle("open");
+        links.classList.toggle("open", isOpen);
+        if (isOpen) {
+          gsap.from("#navLinks a, #navLinks button", {
+            opacity: 0, y: -10, stagger: 0.06, duration: 0.3, ease: "power2.out"
+          });
+        }
+      }
+      function closeMenu() {
+        document.getElementById("hamburger").classList.remove("open");
+        document.getElementById("navLinks").classList.remove("open");
+      }
+
+      // Project card tilt
       document.querySelectorAll(".project-card").forEach((card) => {
         card.addEventListener("mousemove", (e) => {
           const rect = card.getBoundingClientRect();
           const x = (e.clientX - rect.left) / rect.width - 0.5;
           const y = (e.clientY - rect.top) / rect.height - 0.5;
-          gsap.to(card, {
-            rotateX: -y * 6,
-            rotateY: x * 6,
-            duration: 0.3,
-            ease: "power2.out",
-            transformPerspective: 600,
-          });
+          gsap.to(card, { rotateX: -y * 6, rotateY: x * 6, duration: 0.3, ease: "power2.out", transformPerspective: 600 });
         });
         card.addEventListener("mouseleave", () => {
-          gsap.to(card, {
-            rotateX: 0,
-            rotateY: 0,
-            duration: 0.5,
-            ease: "power2.out",
-          });
+          gsap.to(card, { rotateX: 0, rotateY: 0, duration: 0.5, ease: "power2.out" });
         });
       });
     </script>
